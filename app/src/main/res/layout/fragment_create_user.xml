@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".uiLogin.CreateAccountFragment">
+
+    <EditText
+        android:id="@+id/create_account_email"
+        android:textColorHint="@color/blue_primary"
+        android:textColor="@color/blue_primary"
+        app:backgroundTint="@color/blue_primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:autofillHints="email"
+        android:gravity="center"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <EditText
+        android:id="@+id/create_account_password"
+        android:textColorHint="@color/blue_primary"
+        android:textColor="@color/blue_primary"
+        app:backgroundTint="@color/blue_primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:autofillHints="password"
+        android:gravity="center"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_email" />
+
+    <EditText
+        android:id="@+id/create_account_phone"
+        android:textColorHint="@color/blue_primary"
+        android:textColor="@color/blue_primary"
+        app:backgroundTint="@color/blue_primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="@string/phone_number"
+        android:autofillHints=".AUTOFILL_HINT_PHONE_NUMBER"
+        android:inputType="phone"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_password">
+    </EditText>
+
+    <EditText
+        android:id="@+id/create_account_name"
+        android:textColorHint="@color/blue_primary"
+        android:textColor="@color/blue_primary"
+        app:backgroundTint="@color/blue_primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_phone"
+        android:inputType="textPersonName"
+        android:autofillHints=".AUTOFILL_HINT_PERSON_NAME_GIVEN">
+    </EditText>
+    <!--app:backgroundTint="@color/white"-->
+    <EditText
+        android:id="@+id/create_account_surname"
+        android:textColorHint="@color/blue_primary"
+        android:textColor="@color/blue_primary"
+        app:backgroundTint="@color/blue_primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_name"
+        android:hint="@string/surname"
+        android:inputType="textPersonName"
+        android:autofillHints=".AUTOFILL_HINT_PERSON_NAME_MIDDLE">
+    </EditText>
+
+    <Button
+        android:id="@+id/create_account_button"
+        android:textColor="@color/white"
+        android:background="@drawable/button_fade_background"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:text="@string/createAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_surname">
+    </Button>
+
+
+    <Button
+        android:id="@+id/go_to_logging_screen_button"
+        android:textColor="@color/white"
+        android:background="@drawable/button_fade_background"
+        android:layout_width="0dp"
+        android:text="@string/already_have_an_account"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_button">
+    </Button>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

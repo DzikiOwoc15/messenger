@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Messenger2021</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="createAccount">Create Account</string>
+    <string name="login_info_text">Already have an account? Click here</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="phone_number">Phone number</string>
+    <string name="or">or</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="friends_profile_pic">Profile picture of a friend</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="friend_requests">Friend requests</string>
+    <string name="no_conversations">No conversations found</string>
+    <string name="accept_friend_request">Accept a friend request</string>
+    <string name="decline_friend_request">Decline a friend request</string>
+    <string name="no_requests_found">No requests found</string>
+    <string name="search_for_friend">Search for friends</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/friend_request_image_wrapper"
+        android:layout_width="65dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="5dp"
+        android:contentDescription="@string/friends_profile_pic"
+        android:shape="ring"
+        app:cardCornerRadius="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/friend_request_image"
+            android:layout_width="65dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/friends_profile_pic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageView>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/friend_request_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Kamil Radzimowski"
+        android:textColor="@color/blue_primary"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/friend_request_image_wrapper"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/friend_request_accept"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="@string/accept_friend_request"
+        android:src="@drawable/accept_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/friend_request_name"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/friend_request_decline"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="@string/decline_friend_request"
+        android:src="@drawable/decline_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/friend_request_accept"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
