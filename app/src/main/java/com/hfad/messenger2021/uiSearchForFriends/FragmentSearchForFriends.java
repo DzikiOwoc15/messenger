@@ -121,11 +121,14 @@ public class FragmentSearchForFriends extends Fragment {
 
         localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
 
+            //Recycler on click
             adapter.getClickPublishSubject().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Integer>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {clickDisposable = d;}
                 @Override
                 public void onNext(@NonNull Integer friendId) {
+
+                    //Send friend request on click
                     backEndViewModel.sendFriendRequest(user.getId(), friendId, user.getApiKey()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {requestDisposable = d;}

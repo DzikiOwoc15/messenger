@@ -107,7 +107,6 @@ public class FriendRequestsFragment extends Fragment {
                         List<Integer> relationIdList = new ArrayList<>();
 
                         for (int i = 0; i < requests.length(); i++){
-                            //TODO REDESIGN FOR NEW SCHEMA
                             int relationId = requests.getJSONObject(i).getInt("relation_id");
                             int userId = requests.getJSONObject(i).getInt("user_id");
                             String name = requests.getJSONObject(i).getString("name");
@@ -118,6 +117,7 @@ public class FriendRequestsFragment extends Fragment {
                         }
                         adapter.setNameList(nameList);
                         adapter.setUserIdList(userIdList);
+                        adapter.setRelationId(relationIdList);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();

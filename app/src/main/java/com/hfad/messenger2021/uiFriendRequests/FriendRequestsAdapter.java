@@ -26,6 +26,9 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     final int EMPTY_VIEW = 0;
 
     private final PublishSubject<String> clickPublisher = PublishSubject.create();
+
+    //Publish subject with custom object named RequestResponse is used to transfer data
+    //(boolean isAccepted, int relationId) using single rxJava subject onClick
     private final PublishSubject<RequestResponse> requestClickPublisher = PublishSubject.create();
 
     @NonNull
@@ -45,17 +48,32 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof friendRequestViewHolder){
             ((friendRequestViewHolder) holder).request_name.setText(nameList.get(position));
+
+            //On accept click listener
             ((friendRequestViewHolder) holder).request_accept.setOnClickListener(view -> {
                 RequestResponse response = new RequestResponse(true, userIdList.get(position));
                 requestClickPublisher.onNext(response);
-                // TODO DELTE THIS ENTRY FROM RECYCLER VIEW
+
+                //Remove request no matter if the request has been accepted or not
+                userIdList.remove(position);
+                nameList.remove(position);
+                relationId.remove(position);
+                notifyItemRemoved(position);
             });
+            //On decline click listener
             ((friendRequestViewHolder) holder).request_decline.setOnClickListener(view -> {
                 RequestResponse response = new RequestResponse(false, userIdList.get(position));
                 requestClickPublisher.onNext(response);
+
+                //Remove request no matter if the request has been accepted or not
+                userIdList.remove(position);
+                nameList.remove(position);
+                relationId.remove(position);
+                notifyItemRemoved(position);
             });
         }
         else{
+            //This click opens new fragment
             ((emptyFriendRequestsViewHolder) holder).emptyButton.setOnClickListener(view -> {
                 clickPublisher.onNext("Click");
             });
@@ -86,6 +104,9 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return clickPublisher;
     }
 
+    public PublishSubject<RequestResponse> getRequestClickPublisher() {
+        return requestClickPublisher;
+    }
 
     public static class emptyFriendRequestsViewHolder extends RecyclerView.ViewHolder{
         public final TextView emptyTextView;
@@ -126,4 +147,5 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void setUserIdList(List<Integer> userIdList) {
         this.userIdList = userIdList;
     }
+
 }
