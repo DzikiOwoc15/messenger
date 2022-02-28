@@ -80,41 +80,44 @@ public class FragmentSearchForFriends extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getContext(), "Change: " + newText, Toast.LENGTH_SHORT).show();
-                localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
-                    backEndViewModel.loadUsersByString(newText, user.getId(), user.getApiKey()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {usersDisposable = d;}
-                        @Override
-                        public void onNext(@NonNull JSONObject jsonObject) {
-                            try {
-                                JSONArray usersArray = jsonObject.getJSONArray("users");
-                                List<String> nameList = new ArrayList<>();
-                                List<Integer> idList = new ArrayList<>();
+                if (newText.length() != 0){
 
-                                for (int i = 0; i < usersArray.length(); i++){
-                                    int id = usersArray.getJSONObject(i).getInt("id");
-                                    String name = usersArray.getJSONObject(i).getString("name");
+                    Toast.makeText(getContext(), "Change: " + newText, Toast.LENGTH_SHORT).show();
+                    localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+                        backEndViewModel.loadUsersByString(newText, user.getId(), user.getApiKey()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {usersDisposable = d;}
+                            @Override
+                            public void onNext(@NonNull JSONObject jsonObject) {
+                                try {
+                                    JSONArray usersArray = jsonObject.getJSONArray("users");
+                                    List<String> nameList = new ArrayList<>();
+                                    List<Integer> idList = new ArrayList<>();
 
-                                    nameList.add(name);
-                                    idList.add(id);
+                                    for (int i = 0; i < usersArray.length(); i++){
+                                        int id = usersArray.getJSONObject(i).getInt("id");
+                                        String name = usersArray.getJSONObject(i).getString("name");
+
+                                        nameList.add(name);
+                                        idList.add(id);
+                                    }
+                                    adapter.setIdList(idList);
+                                    adapter.setNameList(nameList);
+                                    adapter.notifyDataSetChanged();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                adapter.setIdList(idList);
-                                adapter.setNameList(nameList);
-                                adapter.notifyDataSetChanged();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            Log.d(TAG, e.toString());
-                        }
-                        @Override
-                        public void onComplete() {}
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.d(TAG, e.toString());
+                            }
+                            @Override
+                            public void onComplete() {}
+                        });
                     });
 
-                });
+                }
                 return false;
             }
         });

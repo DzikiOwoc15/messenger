@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,8 @@ public class MainScreenFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_main_screen, container, false);
         ImageView friendRequestsImageView = root.findViewById(R.id.main_friend_requests);
-        TextView friendRequestsBadge = root.findViewById(R.id.main_friend_requests_badge);
+        RelativeLayout friendRequestsWrapper = root.findViewById(R.id.main_friend_requests_wrapper);
+        TextView friendRequestsBadge = friendRequestsWrapper.findViewById(R.id.main_friend_requests_badge);
 
         RecyclerView recyclerView = root.findViewById(R.id.main_recycler);
         MainScreenAdapter recyclerAdapter = new MainScreenAdapter();
@@ -106,6 +108,7 @@ public class MainScreenFragment extends Fragment {
                 public void onComplete() {}
             });
 
+            //Number of friend requests received (displayed on a badge)
             backEndViewModel.getNumberOfFriendRequests(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<JSONObject>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {friendRequestsDisposable = d;}
@@ -133,6 +136,7 @@ public class MainScreenFragment extends Fragment {
 
         });
 
+        //If recycler view is empty a on click listener is set
         recyclerAdapter.getClick().subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {listenerDisposable = d;}

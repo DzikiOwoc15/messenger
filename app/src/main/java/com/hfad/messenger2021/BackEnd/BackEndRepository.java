@@ -123,6 +123,7 @@ public class BackEndRepository {
         return Observable.fromCallable(() -> {
             URL url = new URL(String.format("http://%s:8080/api/sendFriendRequest?userId=%s&friendsId=%s&apiKey=%s", ipv4, userId, friendsId, apiKey));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
             connection.setConnectTimeout(TIMEOUT_TIME);
             connection.connect();
             return connection.getResponseCode();
