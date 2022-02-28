@@ -51,25 +51,19 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             //On accept click listener
             ((friendRequestViewHolder) holder).request_accept.setOnClickListener(view -> {
-                RequestResponse response = new RequestResponse(true, userIdList.get(position));
+                RequestResponse response = new RequestResponse(true, relationId.get(position));
                 requestClickPublisher.onNext(response);
 
                 //Remove request no matter if the request has been accepted or not
-                userIdList.remove(position);
-                nameList.remove(position);
-                relationId.remove(position);
-                notifyItemRemoved(position);
+                removeItemAtPosition(position);
             });
             //On decline click listener
             ((friendRequestViewHolder) holder).request_decline.setOnClickListener(view -> {
-                RequestResponse response = new RequestResponse(false, userIdList.get(position));
+                RequestResponse response = new RequestResponse(false, relationId.get(position));
                 requestClickPublisher.onNext(response);
 
                 //Remove request no matter if the request has been accepted or not
-                userIdList.remove(position);
-                nameList.remove(position);
-                relationId.remove(position);
-                notifyItemRemoved(position);
+                removeItemAtPosition(position);
             });
         }
         else{
@@ -98,6 +92,13 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else{
             return 1;
         }
+    }
+
+    private void removeItemAtPosition(int position){
+        userIdList.remove(position);
+        nameList.remove(position);
+        relationId.remove(position);
+        notifyItemRemoved(position);
     }
 
     public PublishSubject<String> getClick() {

@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
+import com.hfad.messenger2021.Objects.RequestResponse;
 import com.hfad.messenger2021.R;
 import com.hfad.messenger2021.uiSearchForFriends.FragmentSearchForFriends;
 
@@ -95,6 +97,7 @@ public class FriendRequestsFragment extends Fragment {
 
         //Load requests data
         localDatabaseViewModel.getUser().observe(getActivity(), user -> {
+
             backEndViewModel.loadFriendRequests(user.getId(), user.getApiKey()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {}
@@ -127,6 +130,35 @@ public class FriendRequestsFragment extends Fragment {
                 public void onError(@NonNull Throwable e) {
                     Log.d(TAG, e.toString());
                 }
+                @Override
+                public void onComplete() {}
+            });
+
+            //Accept or decline click adapter
+            adapter.getRequestClickPublisher().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<RequestResponse>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {}
+                @Override
+                public void onNext(@NonNull RequestResponse userResponse) {
+
+                    backEndViewModel.answerFriendRequest(user.getId(), userResponse.getRelationId(), user.getApiKey(), userResponse.isAccepted()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {}
+                        @Override
+                        public void onNext(@NonNull Integer responseCode) {
+                            if(responseCode == 200){
+                                Toast.makeText(getActivity(), "Response has been send", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onError(@NonNull Throwable e) {}
+                        @Override
+                        public void onComplete() {}
+                    });
+
+                }
+                @Override
+                public void onError(@NonNull Throwable e) {}
                 @Override
                 public void onComplete() {}
             });

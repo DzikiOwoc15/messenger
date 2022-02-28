@@ -2,26 +2,26 @@ package com.hfad.messenger2021.Objects;
 
 public class RequestResponse {
     private boolean isAccepted;
-    private int friendId;
+    private int relationId;
+
+    public RequestResponse(boolean isAccepted, int relationId) {
+        this.isAccepted = isAccepted;
+        this.relationId = relationId;
+    }
 
     public boolean isAccepted() {
         return isAccepted;
     }
 
     public void setAccepted(boolean accepted) {
-        this.isAccepted = accepted;
+        isAccepted = accepted;
     }
 
-    public int getFriendId() {
-        return friendId;
+    public int getRelationId() {
+        return relationId;
     }
 
-    public void setFriendId(int friendId) {
-        this.friendId = friendId;
-    }
-
-    public RequestResponse(boolean isAccepted, int friendId) {
-        this.isAccepted = isAccepted;
-        this.friendId = friendId;
+    public void setRelationId(int relationId) {
+        this.relationId = relationId;
     }
 }
