@@ -19,12 +19,16 @@ import java.util.List;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
-public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<String> usernameList = new ArrayList<>();
     List<Bitmap> pictureList = new ArrayList<>();
     List<String> lastMessageList = new ArrayList<>();
     List<String> lastMessageTimestampList = new ArrayList<>();
     private final int EMPTY_VIEW_TYPE = 0;
+    private final int LOADING_VIEW_TYPE = 2;
+    private final int NO_CONNECTION_VIEW_TYPE = 3;
+
+    private Boolean isConnectionWorking = null;
 
     private final PublishSubject<String> onClickSubject = PublishSubject.create();
 
@@ -34,8 +38,18 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == EMPTY_VIEW_TYPE){
             Log.d("MainScreenAdapter", "EMPTY_VIEW_TYPE");
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_conversation_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_item_empty, parent, false);
             return new emptyViewHolder(view);
+        }
+        else if(viewType == LOADING_VIEW_TYPE){
+            Log.d("MainScreenAdapter", "LOADING_VIEW_TYPE");
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_item_loading, parent, false);
+            return new loadingViewHolder(view);
+        }
+        else if(viewType == NO_CONNECTION_VIEW_TYPE){
+            Log.d("MainScreenAdapter", "NO_CONNECTION_VIEW_TYPE");
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_item_no_connection, parent, false);
+            return new noConnectionViewHolder(view);
         }
         else{
             Log.d("MainScreenAdapter", "BASIC_VIEW_TYPE");
@@ -57,7 +71,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((MainViewHolder) holder).imageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
             }
         }
-        else{
+        else if (holder instanceof emptyViewHolder){
             ((emptyViewHolder) holder).button.setOnClickListener(view -> {
                 onClickSubject.onNext("click");
             });
@@ -77,6 +91,12 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
+        if (isConnectionWorking == null){
+            return LOADING_VIEW_TYPE;
+        }
+        if(!isConnectionWorking){
+            return NO_CONNECTION_VIEW_TYPE;
+        }
         if (usernameList.size() == 0){
             return EMPTY_VIEW_TYPE;
         }
@@ -113,6 +133,18 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    public static class loadingViewHolder extends RecyclerView.ViewHolder{
+        public loadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    public static class noConnectionViewHolder extends RecyclerView.ViewHolder{
+        public noConnectionViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
     public void setUsernameList(List<String> usernameList) {
         this.usernameList = usernameList;
     }
@@ -124,6 +156,10 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public PublishSubject<String> getClick(){
         return onClickSubject;
+    }
+
+    public void setIsConnectionWorking(Boolean isConnectionWorking){
+        this.isConnectionWorking = isConnectionWorking;
     }
 
 }

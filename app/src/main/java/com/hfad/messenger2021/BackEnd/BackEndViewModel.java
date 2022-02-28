@@ -61,4 +61,8 @@ public class BackEndViewModel extends AndroidViewModel {
         return backEndRepository.loadUsersByString(query, userId, apiKey);
     }
 
+    public Observable<Boolean> isInternetConnectionWorking(){
+        return backEndRepository.checkInternetConnection();
+    }
+
 }

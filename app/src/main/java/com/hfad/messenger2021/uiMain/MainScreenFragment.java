@@ -40,6 +40,8 @@ public class MainScreenFragment extends Fragment {
     private Disposable friendRequestsDisposable;
     private Disposable listenerDisposable;
 
+    private Boolean isInternetConnectionWorking = null;
+
     public MainScreenFragment() {
         // Required empty public constructor
     }
@@ -73,7 +75,23 @@ public class MainScreenFragment extends Fragment {
         LocalDatabaseViewModel localDatabaseViewModel = new ViewModelProvider(getActivity()).get(LocalDatabaseViewModel.class);
         BackEndViewModel backEndViewModel = new ViewModelProvider(getActivity()).get(BackEndViewModel.class);
 
+        //Check if internet connection is working
+        backEndViewModel.isInternetConnectionWorking().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {}
+            @Override
+            public void onNext(@NonNull Boolean isConnectionWorking) {
+                recyclerAdapter.setIsConnectionWorking(isConnectionWorking);
+                recyclerAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onError(@NonNull Throwable e) {}
+            @Override
+            public void onComplete() {}
+        });
+
         localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+
             backEndViewModel.loadData(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<JSONObject>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {}
@@ -106,6 +124,7 @@ public class MainScreenFragment extends Fragment {
                 public void onError(@NonNull Throwable e) {}
                 @Override
                 public void onComplete() {}
+
             });
 
             //Number of friend requests received (displayed on a badge)
@@ -151,6 +170,7 @@ public class MainScreenFragment extends Fragment {
         });
 
         friendRequestsImageView.setOnClickListener(view -> {
+
             getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FriendRequestsFragment.class, null).addToBackStack("MainScreen").commit();
         });
 

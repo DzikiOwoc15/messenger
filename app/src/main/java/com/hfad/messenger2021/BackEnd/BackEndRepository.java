@@ -239,4 +239,24 @@ public class BackEndRepository {
         });
     }
 
+    public Observable<Boolean> checkInternetConnection(){
+        return checkInternetConnectionASYNC();
+    }
+
+    private Observable<Boolean> checkInternetConnectionASYNC(){
+        return Observable.fromCallable(() -> {
+            try{
+                URL url = new URL("https://www.google.pl/");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(TIMEOUT_TIME);
+                connection.connect();
+                return connection.getResponseCode() == 200;
+            } catch (IOException e){
+                Log.d("REPO", e.getMessage());
+            }
+            return false;
+        });
+    }
+
 }
