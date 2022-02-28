@@ -100,6 +100,7 @@ public class BackEndRepository {
                 URL url = new URL(String.format("http://%s:8080/api/loadData?userId=%s&&apiKey=%s", ipv4, userId, apiKey));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(TIMEOUT_TIME);
+                connection.setRequestMethod("GET");
                 connection.connect();
                 if(connection.getResponseCode() == 200){
                     return ConnectionToJSON.readAll(connection);
@@ -224,6 +225,7 @@ public class BackEndRepository {
     }
 
     private Observable<JSONObject> loadUsersByStringASYNC(String query, int userId, String apiKey){
+        Log.d("REPO", String.format("Query: %s", query));
         return Observable.fromCallable(() -> {
             URL url = new URL(String.format("http://%s:8080/api/loadUsersByString?userId=%s&apiKey=%s&givenString=%s", ipv4, userId, apiKey, query));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

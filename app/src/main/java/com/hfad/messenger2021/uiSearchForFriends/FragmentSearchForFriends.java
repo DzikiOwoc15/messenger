@@ -80,6 +80,7 @@ public class FragmentSearchForFriends extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //TODO FIX SPACE IS WRITTEN AS %20 IN A QUERY (???)
                 if (newText.length() != 0){
 
                     Toast.makeText(getContext(), "Change: " + newText, Toast.LENGTH_SHORT).show();

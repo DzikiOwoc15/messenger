@@ -23,13 +23,14 @@
         android:id="@+id/main_friend_requests_wrapper"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline4">
+
         <ImageView
             android:id="@+id/main_friend_requests"
             android:layout_width="45dp"
@@ -44,11 +45,13 @@
             android:visibility="invisible"
             android:textColor="@color/white"
             android:background="@drawable/bagde_circle"
+            android:layout_marginRight="-7dp"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignRight="@id/main_friend_requests"
             android:layout_alignParentTop="true"
-            android:layout_alignEnd="@id/main_friend_requests">
+            android:layout_alignEnd="@id/main_friend_requests"
+            android:layout_marginEnd="-7dp">
         </TextView>
     </RelativeLayout>
 

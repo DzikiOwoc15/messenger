@@ -19,7 +19,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_for_friends_recycler"
-        android:layout_margin="15dp"
+        android:layout_margin="20dp"
         tools:listitem="@layout/search_for_friends_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
