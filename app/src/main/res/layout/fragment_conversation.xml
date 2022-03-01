@@ -49,6 +49,7 @@
         android:id="@+id/conversation_fragment_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/text_message"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline8">
     </androidx.recyclerview.widget.RecyclerView>
@@ -70,7 +71,12 @@
     <!-- TODO MAKE THIS EDIT TEXT PRETTIER !-->
     <EditText
         android:id="@+id/conversation_fragment_input"
+        android:hint="@string/Aa"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:layout_width="0dp"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="5dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

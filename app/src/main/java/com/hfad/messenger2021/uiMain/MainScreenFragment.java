@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.GsonBuilder;
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
+import com.hfad.messenger2021.Helpers.getGson;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
+import com.hfad.messenger2021.Objects.ConversationObject;
 import com.hfad.messenger2021.R;
 import com.hfad.messenger2021.Helpers.getRidOfDisposable;
 import com.hfad.messenger2021.uiConversation.ConversationFragment;
@@ -96,6 +99,7 @@ public class MainScreenFragment extends Fragment {
 
         localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
 
+            //Load data for the main recycler
             backEndViewModel.loadData(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<JSONObject>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -105,9 +109,11 @@ public class MainScreenFragment extends Fragment {
                     List<String> friendsList = new ArrayList<>();
                     List<String> lastMessageTimestampList = new ArrayList<>();
                     List<String> lastMessageList = new ArrayList<>();
+                    List<Integer> idList = new ArrayList<>();
                     try {
                         JSONArray array = usersJSON.getJSONArray("friends");
                         for(int i = 0; i < array.length(); i++){
+                            Integer id = array.getJSONObject(i).getInt("id");
                             String name = array.getJSONObject(i).getString("name");
                             String surname = array.getJSONObject(i).getString("surname");
                             String timestamp = array.getJSONObject(i).getString("last_message_timestamp");
@@ -131,6 +137,7 @@ public class MainScreenFragment extends Fragment {
 
                         }
                         Log.d("MainScreenFragment", String.format("Conversations loaded: %d", friendsList.size()));
+                        recyclerAdapter.setIdList(idList);
                         recyclerAdapter.setUsernameList(friendsList);
                         recyclerAdapter.setLastMessageList(lastMessageList);
                         recyclerAdapter.setLastMessageTimestampList(lastMessageTimestampList);
@@ -174,12 +181,13 @@ public class MainScreenFragment extends Fragment {
             });
 
             //On friend click listener (open conversation with that friend)
-            recyclerAdapter.getOnFriendClick().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Integer>() {
+            recyclerAdapter.getOnFriendClick().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ConversationObject>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {friendCLickDisposable = d;}
                 @Override
-                public void onNext(@NonNull Integer integer) {
-                    Fragment conversation_fragment = ConversationFragment.newInstance("s");
+                public void onNext(@NonNull ConversationObject object) {
+                    String conversationObjectJSON = getGson.get().toJson(object);
+                    Fragment conversation_fragment = ConversationFragment.newInstance(conversationObjectJSON);
                     getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, conversation_fragment, null).addToBackStack("MainScreen").commit();
                 }
                 @Override

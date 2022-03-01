@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hfad.messenger2021.Objects.ConversationObject;
 import com.hfad.messenger2021.R;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     List<Bitmap> pictureList = new ArrayList<>();
     List<String> lastMessageList = new ArrayList<>();
     List<String> lastMessageTimestampList = new ArrayList<>();
+    List<Integer> idList = new ArrayList<>();
     private final int EMPTY_VIEW_TYPE = 0;
     private final int LOADING_VIEW_TYPE = 2;
     private final int NO_CONNECTION_VIEW_TYPE = 3;
@@ -31,7 +33,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Boolean isConnectionWorking = null;
 
     private final PublishSubject<String> onClickSubject = PublishSubject.create();
-    private final PublishSubject<Integer> onFriendClickSubject = PublishSubject.create();
+    private final PublishSubject<ConversationObject> onFriendClickSubject = PublishSubject.create();
 
 
     @NonNull
@@ -73,7 +75,8 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             ((MainViewHolder) holder).itemView.setOnClickListener(view -> {
-                onFriendClickSubject.onNext(position);
+                ConversationObject conversationObject = new ConversationObject(usernameList.get(position), idList.get(position));
+                onFriendClickSubject.onNext(conversationObject);
             });
         }
         else if (holder instanceof emptyViewHolder){
@@ -156,14 +159,15 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void setLastMessageList(List<String> lastMessageList){this.lastMessageList = lastMessageList;}
 
-    public void setLastMessageTimestampList(List<String> lastMessageTimestampList) {this.lastMessageTimestampList = lastMessageTimestampList;
-    }
+    public void setLastMessageTimestampList(List<String> lastMessageTimestampList) {this.lastMessageTimestampList = lastMessageTimestampList; }
+
+    public void setIdList(List<Integer> idList) {this.idList = idList; }
 
     public PublishSubject<String> getClick(){
         return onClickSubject;
     }
 
-    public PublishSubject<Integer> getOnFriendClick() {return onFriendClickSubject;}
+    public PublishSubject<ConversationObject> getOnFriendClick() {return onFriendClickSubject;}
 
     public void setIsConnectionWorking(Boolean isConnectionWorking){
         this.isConnectionWorking = isConnectionWorking;
