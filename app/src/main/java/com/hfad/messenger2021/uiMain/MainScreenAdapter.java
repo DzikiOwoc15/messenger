@@ -75,6 +75,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             ((MainViewHolder) holder).itemView.setOnClickListener(view -> {
+                Log.d("MainScreenAdapter", String.format("Name size: %s, Id size: %s,  position: %s", usernameList.size(), idList.size(), position));
                 ConversationObject conversationObject = new ConversationObject(usernameList.get(position), idList.get(position));
                 onFriendClickSubject.onNext(conversationObject);
             });

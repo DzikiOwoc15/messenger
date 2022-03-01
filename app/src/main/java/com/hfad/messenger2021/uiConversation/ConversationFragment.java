@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.Helpers.getGson;
@@ -45,6 +47,7 @@ public class ConversationFragment extends Fragment {
     private User userObject;
 
     private Disposable loadConversationDisposable;
+    private Disposable sendMessageDisposable;
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -86,6 +89,9 @@ public class ConversationFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
+        //Make view go up with soft keyboard
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         BackEndViewModel backEndViewModel = new ViewModelProvider(getActivity()).get(BackEndViewModel.class);
 
         friendsNameTextView.setText(conversationObject.getFriendsName());
@@ -95,6 +101,7 @@ public class ConversationFragment extends Fragment {
         else{
             friendsProfilePicImageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
         }
+        //TODO UPDATE RECYCLER EVERY 10 SECONDS
 
         backEndViewModel.loadConversation(userObject.getId(), userObject.getApiKey(), conversationObject.getFriendsId()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
             @Override
@@ -113,6 +120,7 @@ public class ConversationFragment extends Fragment {
                         messageList.add(new ConversationMessage(message, (userObject.getId() == authorsId)));
                     }
                     adapter.setMessageList(messageList);
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -123,12 +131,37 @@ public class ConversationFragment extends Fragment {
             public void onComplete() {}
         });
 
+        sendMessageImageView.setOnClickListener(view -> {
+            if(inputEditText.getText().toString().length() != 0){
+                backEndViewModel.sendMessage(userObject.getId(), conversationObject.getFriendsId(), userObject.getApiKey(), inputEditText.getText().toString()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {sendMessageDisposable = d;}
+                    @Override
+                    public void onNext(@NonNull Integer integer) {
+                        if(integer == 200){
+                            inputEditText.setText("");
+                            Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
+                        }
+                        //TODO UPDATE RECYCLER
+                    }
+                    @Override
+                    public void onError(@NonNull Throwable e) {}
+                    @Override
+                    public void onComplete() {}
+                });
+            }
+            else{
+                //Can not send empty message
+            }
+        });
+
         return root;
     }
 
     @Override
     public void onDestroy() {
         getRidOfDisposable.getRidOf(loadConversationDisposable);
+        getRidOfDisposable.getRidOf(sendMessageDisposable);
         super.onDestroy();
     }
 }

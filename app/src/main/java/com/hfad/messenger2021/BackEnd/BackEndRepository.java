@@ -11,8 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Function;
 
 public class BackEndRepository {
     public BackEndRepository(){
@@ -87,6 +90,14 @@ public class BackEndRepository {
             }
             return null;
         });
+    }
+
+    public @io.reactivex.rxjava3.annotations.NonNull Observable<Object> loadMainDataInterval(int userId, String apiKey){
+        return loadMainDataIntervalASYNC(userId, apiKey);
+    }
+
+    private @io.reactivex.rxjava3.annotations.NonNull Observable<Object> loadMainDataIntervalASYNC(int userId, String apiKey){
+        return  Observable.interval(0, 15, TimeUnit.SECONDS).flatMap(aLong -> loadMainDataASYNC(userId, apiKey));
     }
 
     public Observable<JSONObject> loadMainData(int userId, String apiKey){

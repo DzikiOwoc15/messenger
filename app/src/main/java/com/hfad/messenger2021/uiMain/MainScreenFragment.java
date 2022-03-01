@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
+import com.hfad.messenger2021.Helpers.DateFormatter;
 import com.hfad.messenger2021.Helpers.getGson;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
 import com.hfad.messenger2021.Objects.ConversationObject;
@@ -31,11 +32,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -99,18 +104,17 @@ public class MainScreenFragment extends Fragment {
         localDatabaseViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
 
             //Load data for the main recycler
-            backEndViewModel.loadData(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<JSONObject>() {
+            backEndViewModel.loadMainDataInterval(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Object>() {
                 @Override
-                public void onSubscribe(@NonNull Disposable d) {
-                    loadDataDisposable = d;}
+                public void onSubscribe(@NonNull Disposable d) {loadDataDisposable = d;}
                 @Override
-                public void onNext(@NonNull JSONObject usersJSON) {
+                public void onNext(@NonNull Object usersJSON) {
                     List<String> friendsList = new ArrayList<>();
                     List<String> lastMessageTimestampList = new ArrayList<>();
                     List<String> lastMessageList = new ArrayList<>();
                     List<Integer> idList = new ArrayList<>();
                     try {
-                        JSONArray array = usersJSON.getJSONArray("friends");
+                        JSONArray array = ((JSONObject)usersJSON).getJSONArray("friends");
                         for(int i = 0; i < array.length(); i++){
                             Integer id = array.getJSONObject(i).getInt("id");
                             String name = array.getJSONObject(i).getString("name");
@@ -119,12 +123,13 @@ public class MainScreenFragment extends Fragment {
                             String lastMessage = array.getJSONObject(i).getString("last_message");
 
                             friendsList.add(String.format("%s %s", name, surname));
+                            idList.add(id);
 
                             if (timestamp.equals("null")){
                                 lastMessageTimestampList.add("");
                             }
                             else{
-                                lastMessageTimestampList.add(timestamp);
+                                lastMessageTimestampList.add(DateFormatter.format(timestamp));
                             }
 
                             if (lastMessage.equals("null")){
@@ -229,6 +234,9 @@ public class MainScreenFragment extends Fragment {
         super.onDestroy();
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        getRidOfDisposable.getRidOf(loadDataDisposable);
+        super.onDestroyView();
+    }
 }

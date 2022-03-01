@@ -5,11 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.hfad.messenger2021.BackEnd.BackEndRepository;
-
 import org.json.JSONObject;
-
-import java.net.HttpURLConnection;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -63,6 +59,10 @@ public class BackEndViewModel extends AndroidViewModel {
 
     public Observable<Boolean> isInternetConnectionWorking(){
         return backEndRepository.checkInternetConnection();
+    }
+
+    public @io.reactivex.rxjava3.annotations.NonNull Observable<Object> loadMainDataInterval(int userId, String apiKey){
+        return backEndRepository.loadMainDataInterval(userId, apiKey);
     }
 
 }

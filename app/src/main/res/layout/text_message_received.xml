@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:gravity="start"
+        android:gravity="end"
         android:background="@drawable/message_received"
         android:textColor="@color/blue_primary"
         app:layout_constraintBottom_toBottomOf="parent"
