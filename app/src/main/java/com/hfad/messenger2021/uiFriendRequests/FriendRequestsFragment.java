@@ -153,9 +153,9 @@ public class FriendRequestsFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        getRidOfDisposable.getRid(clickDisposable);
-        getRidOfDisposable.getRid(emptyClickDisposable);
-        getRidOfDisposable.getRid(loadRequestsDisposable);
+        getRidOfDisposable.getRidOf(clickDisposable);
+        getRidOfDisposable.getRidOf(emptyClickDisposable);
+        getRidOfDisposable.getRidOf(loadRequestsDisposable);
         super.onDestroy();
     }
 }

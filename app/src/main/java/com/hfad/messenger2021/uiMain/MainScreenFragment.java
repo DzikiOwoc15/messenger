@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.GsonBuilder;
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.Helpers.getGson;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
@@ -187,7 +186,8 @@ public class MainScreenFragment extends Fragment {
                 @Override
                 public void onNext(@NonNull ConversationObject object) {
                     String conversationObjectJSON = getGson.get().toJson(object);
-                    Fragment conversation_fragment = ConversationFragment.newInstance(conversationObjectJSON);
+                    String userJSON = getGson.get().toJson(user);
+                    Fragment conversation_fragment = ConversationFragment.newInstance(conversationObjectJSON, userJSON);
                     getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, conversation_fragment, null).addToBackStack("MainScreen").commit();
                 }
                 @Override
@@ -221,11 +221,11 @@ public class MainScreenFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        getRidOfDisposable.getRid(emptyClickDisposable);
-        getRidOfDisposable.getRid(friendCLickDisposable);
-        getRidOfDisposable.getRid(friendRequestsDisposable);
-        getRidOfDisposable.getRid(loadDataDisposable);
-        getRidOfDisposable.getRid(checkInternetConnectionDisposable);
+        getRidOfDisposable.getRidOf(emptyClickDisposable);
+        getRidOfDisposable.getRidOf(friendCLickDisposable);
+        getRidOfDisposable.getRidOf(friendRequestsDisposable);
+        getRidOfDisposable.getRidOf(loadDataDisposable);
+        getRidOfDisposable.getRidOf(checkInternetConnectionDisposable);
         super.onDestroy();
     }
 

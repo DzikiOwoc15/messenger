@@ -5,7 +5,7 @@ import android.util.Log;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class getRidOfDisposable {
-    public static void getRid(Disposable toDispose){
+    public static void getRidOf(Disposable toDispose){
         if(toDispose != null && !toDispose.isDisposed()){
             toDispose.dispose();
         }

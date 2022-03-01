@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.Helpers.getRidOfDisposable;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
-import com.hfad.messenger2021.Objects.User;
 import com.hfad.messenger2021.R;
 
 import org.json.JSONArray;
@@ -165,9 +164,9 @@ public class FragmentSearchForFriends extends Fragment {
 
     @Override
     public void onDestroy() {
-        getRidOfDisposable.getRid(usersDisposable);
-        getRidOfDisposable.getRid(clickDisposable);
-        getRidOfDisposable.getRid(requestDisposable);
+        getRidOfDisposable.getRidOf(usersDisposable);
+        getRidOfDisposable.getRidOf(clickDisposable);
+        getRidOfDisposable.getRidOf(requestDisposable);
         super.onDestroy();
     }
 }
