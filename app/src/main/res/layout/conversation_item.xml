@@ -10,19 +10,22 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/conversation_image_wrapper"
         android:layout_width="65dp"
-        android:layout_height="59dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="5dp"
+        android:padding="0dp"
         android:contentDescription="@string/friends_profile_pic"
         android:shape="ring"
-        app:cardCornerRadius="45dp"
+        app:cardCornerRadius="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/conversation_image"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:layout_width="65dp"
-            android:layout_height="match_parent"
+            android:layout_height="65dp"
             android:contentDescription="@string/friends_profile_pic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

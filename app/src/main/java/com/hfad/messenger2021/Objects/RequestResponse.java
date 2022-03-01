@@ -1,5 +1,7 @@
 package com.hfad.messenger2021.Objects;
 
+
+//Object used to pass data from friendRequestsAdapter to fragment
 public class RequestResponse {
     private boolean isAccepted;
     private int relationId;

@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/friend_request_image_wrapper"
         android:layout_width="65dp"
-        android:layout_height="59dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="5dp"
         android:contentDescription="@string/friends_profile_pic"
         android:shape="ring"

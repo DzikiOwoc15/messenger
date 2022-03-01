@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
+import com.hfad.messenger2021.Helpers.getRidOfDisposable;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
 import com.hfad.messenger2021.Objects.RequestResponse;
 import com.hfad.messenger2021.R;
@@ -36,6 +37,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FriendRequestsFragment extends Fragment {
 
     private final String TAG = "FriendRequestsFragment";
+    private Disposable emptyClickDisposable;
+    private Disposable clickDisposable;
+    private Disposable loadRequestsDisposable;
 
 
     public FriendRequestsFragment() {
@@ -61,7 +65,7 @@ public class FriendRequestsFragment extends Fragment {
         //Empty recycler click
         adapter.getClick().subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
             @Override
-            public void onSubscribe(@NonNull Disposable d) {}
+            public void onSubscribe(@NonNull Disposable d) {emptyClickDisposable = d;}
             @Override
             public void onNext(@NonNull String s) {
                 getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FragmentSearchForFriends.class, null).addToBackStack("FriendRequests").commit();
@@ -80,7 +84,7 @@ public class FriendRequestsFragment extends Fragment {
 
             backEndViewModel.loadFriendRequests(user.getId(), user.getApiKey()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
                 @Override
-                public void onSubscribe(@NonNull Disposable d) {}
+                public void onSubscribe(@NonNull Disposable d) {loadRequestsDisposable = d;}
                 @Override
                 public void onNext(@NonNull JSONObject jsonObject) {
                     try {
@@ -117,7 +121,7 @@ public class FriendRequestsFragment extends Fragment {
             //Accept or decline click adapter
             adapter.getRequestClickPublisher().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<RequestResponse>() {
                 @Override
-                public void onSubscribe(@NonNull Disposable d) {}
+                public void onSubscribe(@NonNull Disposable d) {clickDisposable = d;}
                 @Override
                 public void onNext(@NonNull RequestResponse userResponse) {
 
@@ -144,7 +148,14 @@ public class FriendRequestsFragment extends Fragment {
             });
         });
 
-
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        getRidOfDisposable.getRid(clickDisposable);
+        getRidOfDisposable.getRid(emptyClickDisposable);
+        getRidOfDisposable.getRid(loadRequestsDisposable);
+        super.onDestroy();
     }
 }

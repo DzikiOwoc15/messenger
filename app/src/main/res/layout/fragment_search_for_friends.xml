@@ -19,10 +19,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_for_friends_recycler"
-        android:layout_margin="20dp"
-        tools:listitem="@layout/search_for_friends_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/search_for_friends_search_view" />
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_for_friends_search_view"
+        tools:layout_editor_absoluteX="20dp"
+        tools:listitem="@layout/search_for_friends_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

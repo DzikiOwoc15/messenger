@@ -31,6 +31,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Boolean isConnectionWorking = null;
 
     private final PublishSubject<String> onClickSubject = PublishSubject.create();
+    private final PublishSubject<Integer> onFriendClickSubject = PublishSubject.create();
 
 
     @NonNull
@@ -70,6 +71,10 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
             else{
                 ((MainViewHolder) holder).imageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
             }
+
+            ((MainViewHolder) holder).itemView.setOnClickListener(view -> {
+                onFriendClickSubject.onNext(position);
+            });
         }
         else if (holder instanceof emptyViewHolder){
             ((emptyViewHolder) holder).button.setOnClickListener(view -> {
@@ -157,6 +162,8 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     public PublishSubject<String> getClick(){
         return onClickSubject;
     }
+
+    public PublishSubject<Integer> getOnFriendClick() {return onFriendClickSubject;}
 
     public void setIsConnectionWorking(Boolean isConnectionWorking){
         this.isConnectionWorking = isConnectionWorking;

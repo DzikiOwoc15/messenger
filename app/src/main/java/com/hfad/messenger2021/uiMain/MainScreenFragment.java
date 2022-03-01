@@ -14,11 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
 import com.hfad.messenger2021.R;
+import com.hfad.messenger2021.Helpers.getRidOfDisposable;
+import com.hfad.messenger2021.uiConversation.ConversationFragment;
 import com.hfad.messenger2021.uiFriendRequests.FriendRequestsFragment;
 import com.hfad.messenger2021.uiSearchForFriends.FragmentSearchForFriends;
 
@@ -35,12 +36,15 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+
 public class MainScreenFragment extends Fragment {
 
     private Disposable friendRequestsDisposable;
-    private Disposable listenerDisposable;
+    private Disposable loadDataDisposable;
+    private Disposable emptyClickDisposable;
+    private Disposable friendCLickDisposable;
+    private Disposable checkInternetConnectionDisposable;
 
-    private Boolean isInternetConnectionWorking = null;
 
     public MainScreenFragment() {
         // Required empty public constructor
@@ -78,7 +82,7 @@ public class MainScreenFragment extends Fragment {
         //Check if internet connection is working
         backEndViewModel.isInternetConnectionWorking().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Boolean>() {
             @Override
-            public void onSubscribe(@NonNull Disposable d) {}
+            public void onSubscribe(@NonNull Disposable d) {checkInternetConnectionDisposable = d;}
             @Override
             public void onNext(@NonNull Boolean isConnectionWorking) {
                 recyclerAdapter.setIsConnectionWorking(isConnectionWorking);
@@ -94,7 +98,8 @@ public class MainScreenFragment extends Fragment {
 
             backEndViewModel.loadData(user.getId(), user.getApiKey()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<JSONObject>() {
                 @Override
-                public void onSubscribe(@NonNull Disposable d) {}
+                public void onSubscribe(@NonNull Disposable d) {
+                    loadDataDisposable = d;}
                 @Override
                 public void onNext(@NonNull JSONObject usersJSON) {
                     List<String> friendsList = new ArrayList<>();
@@ -105,10 +110,25 @@ public class MainScreenFragment extends Fragment {
                         for(int i = 0; i < array.length(); i++){
                             String name = array.getJSONObject(i).getString("name");
                             String surname = array.getJSONObject(i).getString("surname");
+                            String timestamp = array.getJSONObject(i).getString("last_message_timestamp");
+                            String lastMessage = array.getJSONObject(i).getString("last_message");
+
                             friendsList.add(String.format("%s %s", name, surname));
 
-                            lastMessageTimestampList.add(array.getJSONObject(i).getString("last_message_timestamp"));
-                            lastMessageList.add(array.getJSONObject(i).getString("last_message"));
+                            if (timestamp.equals("null")){
+                                lastMessageTimestampList.add("");
+                            }
+                            else{
+                                lastMessageTimestampList.add(timestamp);
+                            }
+
+                            if (lastMessage.equals("null")){
+                                lastMessageList.add("");
+                            }
+                            else{
+                                lastMessageList.add(lastMessage);
+                            }
+
                         }
                         Log.d("MainScreenFragment", String.format("Conversations loaded: %d", friendsList.size()));
                         recyclerAdapter.setUsernameList(friendsList);
@@ -153,12 +173,27 @@ public class MainScreenFragment extends Fragment {
                 public void onComplete() {}
             });
 
+            //On friend click listener (open conversation with that friend)
+            recyclerAdapter.getOnFriendClick().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {friendCLickDisposable = d;}
+                @Override
+                public void onNext(@NonNull Integer integer) {
+                    Fragment conversation_fragment = ConversationFragment.newInstance("s");
+                    getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, conversation_fragment, null).addToBackStack("MainScreen").commit();
+                }
+                @Override
+                public void onError(@NonNull Throwable e) {}
+                @Override
+                public void onComplete() {}
+            });
+
         });
 
         //If recycler view is empty a on click listener is set
         recyclerAdapter.getClick().subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
             @Override
-            public void onSubscribe(@NonNull Disposable d) {listenerDisposable = d;}
+            public void onSubscribe(@NonNull Disposable d) {emptyClickDisposable = d;}
             @Override
             public void onNext(@NonNull String click) {
                 getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FragmentSearchForFriends.class, null).addToBackStack("MainScreen").commit();
@@ -170,7 +205,6 @@ public class MainScreenFragment extends Fragment {
         });
 
         friendRequestsImageView.setOnClickListener(view -> {
-
             getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FriendRequestsFragment.class, null).addToBackStack("MainScreen").commit();
         });
 
@@ -179,13 +213,14 @@ public class MainScreenFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if (friendRequestsDisposable != null && !friendRequestsDisposable.isDisposed()){
-            friendRequestsDisposable.dispose();
-        }
-        if (listenerDisposable != null && !listenerDisposable.isDisposed()){
-            listenerDisposable.dispose();
-        }
+        getRidOfDisposable.getRid(emptyClickDisposable);
+        getRidOfDisposable.getRid(friendCLickDisposable);
+        getRidOfDisposable.getRid(friendRequestsDisposable);
+        getRidOfDisposable.getRid(loadDataDisposable);
+        getRidOfDisposable.getRid(checkInternetConnectionDisposable);
         super.onDestroy();
     }
+
+
 
 }

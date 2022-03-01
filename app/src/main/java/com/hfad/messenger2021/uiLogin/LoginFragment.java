@@ -7,33 +7,21 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.JsonReader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
-import com.hfad.messenger2021.Objects.ConnectionToJSON;
 import com.hfad.messenger2021.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;

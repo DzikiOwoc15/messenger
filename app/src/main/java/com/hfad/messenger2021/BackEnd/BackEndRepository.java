@@ -2,7 +2,7 @@ package com.hfad.messenger2021.BackEnd;
 
 import android.util.Log;
 
-import com.hfad.messenger2021.Objects.ConnectionToJSON;
+import com.hfad.messenger2021.Helpers.ConnectionToJSON;
 
 import org.json.JSONObject;
 
@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.core.Observable;
 

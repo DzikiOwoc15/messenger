@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
+import com.hfad.messenger2021.Helpers.getRidOfDisposable;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
 import com.hfad.messenger2021.Objects.User;
 import com.hfad.messenger2021.R;
@@ -165,15 +166,9 @@ public class FragmentSearchForFriends extends Fragment {
 
     @Override
     public void onDestroy() {
-        if(usersDisposable != null && !usersDisposable.isDisposed()){
-            usersDisposable.dispose();
-        }
-        if(clickDisposable != null && !clickDisposable.isDisposed()){
-            clickDisposable.dispose();
-        }
-        if(requestDisposable != null && !requestDisposable.isDisposed()){
-            requestDisposable.dispose();
-        }
+        getRidOfDisposable.getRid(usersDisposable);
+        getRidOfDisposable.getRid(clickDisposable);
+        getRidOfDisposable.getRid(requestDisposable);
         super.onDestroy();
     }
 }

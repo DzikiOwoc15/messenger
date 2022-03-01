@@ -21,4 +21,6 @@
     <string name="no_requests_found">No requests found</string>
     <string name="search_for_friend">Search for friends</string>
     <string name="no_connection">No internet connection</string>
+    <string name="conversation_settings">Settings of a conversation</string>
+    <string name="send_message">Senda a message</string>
 </resources>
