@@ -43,6 +43,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+//TODO FIX INCORRECT LAST MESSAGE
 
 public class MainScreenFragment extends Fragment {
 

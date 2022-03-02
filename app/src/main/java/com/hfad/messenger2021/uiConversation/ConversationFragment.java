@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ public class ConversationFragment extends Fragment {
     private Disposable loadConversationDisposable;
     private Disposable sendMessageDisposable;
 
+    private boolean wasScrolledForTheFirstTime = false;
+
     public ConversationFragment() {
         // Required empty public constructor
     }
@@ -86,7 +89,8 @@ public class ConversationFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.conversation_fragment_recycler);
         ConversationAdapter adapter = new ConversationAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         //Make view go up with soft keyboard
@@ -101,9 +105,8 @@ public class ConversationFragment extends Fragment {
         else{
             friendsProfilePicImageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
         }
-        //TODO UPDATE RECYCLER EVERY 10 SECONDS
 
-        backEndViewModel.loadConversation(userObject.getId(), userObject.getApiKey(), conversationObject.getFriendsId()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
+        backEndViewModel.loadConversationInterval(userObject.getId(), userObject.getApiKey(), conversationObject.getFriendsId()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {loadConversationDisposable = d;}
             @Override
@@ -121,6 +124,14 @@ public class ConversationFragment extends Fragment {
                     }
                     adapter.setMessageList(messageList);
                     adapter.notifyDataSetChanged();
+
+                    //Show new messages when conversation is scrolled all the way down
+                    int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                    if((messageList.size() - 1 - lastVisibleItem) < 2 || !wasScrolledForTheFirstTime){
+                        Log.d("Scroll", "Scrolled");
+                        wasScrolledForTheFirstTime = true;
+                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -139,10 +150,10 @@ public class ConversationFragment extends Fragment {
                     @Override
                     public void onNext(@NonNull Integer integer) {
                         if(integer == 200){
+                            adapter.addMessage(new ConversationMessage(inputEditText.getText().toString(), true));
                             inputEditText.setText("");
-                            Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
+                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         }
-                        //TODO UPDATE RECYCLER
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {}
@@ -159,9 +170,9 @@ public class ConversationFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         getRidOfDisposable.getRidOf(loadConversationDisposable);
         getRidOfDisposable.getRidOf(sendMessageDisposable);
-        super.onDestroy();
+        super.onDestroyView();
     }
 }

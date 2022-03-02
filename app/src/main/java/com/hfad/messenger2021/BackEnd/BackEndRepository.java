@@ -1,16 +1,24 @@
 package com.hfad.messenger2021.BackEnd;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.hfad.messenger2021.Helpers.ConnectionToJSON;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -179,8 +187,9 @@ public class BackEndRepository {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public Observable<Integer> sendMessage(int userId, int friendsId , String apiKey, String message){
-        return sendMessageASYNC(userId, friendsId, apiKey, message);
+        return sendMessageASYNC(userId, friendsId, apiKey, stringEncoder(message));
     }
 
     private Observable<Integer> sendMessageASYNC(int userId, int friendsId , String apiKey, String message){
@@ -192,6 +201,10 @@ public class BackEndRepository {
             connection.connect();
             return  connection.getResponseCode();
         });
+    }
+
+    public Observable<JSONObject> loadConversationInterval(int userId, String apiKey, int friendsId){
+        return Observable.interval(0, 5, TimeUnit.SECONDS).flatMap(aLong -> loadConversationASYNC(userId, apiKey, friendsId));
     }
 
     public Observable<JSONObject> loadConversation(int userId, String apiKey, int friendsId){
@@ -267,6 +280,15 @@ public class BackEndRepository {
             }
             return false;
         });
+    }
+
+    private String stringEncoder(String text){
+        try {
+            return URLEncoder.encode(text, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return text;
     }
 
 }

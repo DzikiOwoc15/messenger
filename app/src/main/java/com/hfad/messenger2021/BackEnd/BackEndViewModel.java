@@ -65,4 +65,8 @@ public class BackEndViewModel extends AndroidViewModel {
         return backEndRepository.loadMainDataInterval(userId, apiKey);
     }
 
+    public Observable<JSONObject> loadConversationInterval(int userId, String apiKey, int friendsId){
+        return backEndRepository.loadConversationInterval(userId, apiKey, friendsId);
+    }
+
 }
