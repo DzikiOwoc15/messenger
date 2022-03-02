@@ -50,12 +50,15 @@ public class ConversationFragment extends Fragment {
     private Disposable loadConversationDisposable;
     private Disposable sendMessageDisposable;
 
+    //Variables used to determine if recycler should scroll to the bottom
     private boolean wasScrolledForTheFirstTime = false;
+    private int messageCount = 0;
 
     public ConversationFragment() {
         // Required empty public constructor
     }
 
+    //User's and friend's data is passed in newInstance(param1, param2) in JSON format
     public static ConversationFragment newInstance(String param1, String param2) {
         ConversationFragment fragment = new ConversationFragment();
         Bundle args = new Bundle();
@@ -90,6 +93,7 @@ public class ConversationFragment extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.conversation_fragment_recycler);
         ConversationAdapter adapter = new ConversationAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -125,13 +129,15 @@ public class ConversationFragment extends Fragment {
                     adapter.setMessageList(messageList);
                     adapter.notifyDataSetChanged();
 
-                    //Show new messages when conversation is scrolled all the way down
+                    //Show new messages when conversation is scrolled all the way down and new message is received
+                    //Scroll to bottom for the first time when Fragment is created
                     int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                    if((messageList.size() - 1 - lastVisibleItem) < 2 || !wasScrolledForTheFirstTime){
+                    if(((messageList.size() - 1 - lastVisibleItem) < 2 && messageCount != messageList.size()) || !wasScrolledForTheFirstTime){
                         Log.d("Scroll", "Scrolled");
                         wasScrolledForTheFirstTime = true;
                         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                     }
+                    messageCount = messageList.size();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -150,9 +156,11 @@ public class ConversationFragment extends Fragment {
                     @Override
                     public void onNext(@NonNull Integer integer) {
                         if(integer == 200){
+                            //Add new message to the list
                             adapter.addMessage(new ConversationMessage(inputEditText.getText().toString(), true));
-                            inputEditText.setText("");
+                            //Do not wait for the recycler to refresh itself to scroll to the bottom, do it now
                             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                            inputEditText.setText("");
                         }
                     }
                     @Override
@@ -160,9 +168,6 @@ public class ConversationFragment extends Fragment {
                     @Override
                     public void onComplete() {}
                 });
-            }
-            else{
-                //Can not send empty message
             }
         });
 
