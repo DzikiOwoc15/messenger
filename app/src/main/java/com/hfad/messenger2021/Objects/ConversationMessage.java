@@ -3,6 +3,7 @@ package com.hfad.messenger2021.Objects;
 public class ConversationMessage {
     private String message;
     private boolean wasSentByMe;
+    private String messageDate;
 
     public ConversationMessage(String message, boolean wasSentByMe) {
         this.message = message;

@@ -21,11 +21,7 @@ import java.util.List;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
 public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<String> usernameList = new ArrayList<>();
-    List<Bitmap> pictureList = new ArrayList<>();
-    List<String> lastMessageList = new ArrayList<>();
-    List<String> lastMessageTimestampList = new ArrayList<>();
-    List<Integer> idList = new ArrayList<>();
+    List<ConversationObject> conversationList = new ArrayList<>();
     private final int EMPTY_VIEW_TYPE = 0;
     private final int LOADING_VIEW_TYPE = 2;
     private final int NO_CONNECTION_VIEW_TYPE = 3;
@@ -64,19 +60,18 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MainViewHolder){
-            ((MainViewHolder) holder).usernameView.setText(usernameList.get(position));
-            ((MainViewHolder) holder).lastMessageView.setText(lastMessageList.get(position));
-            ((MainViewHolder) holder).lastMessageTimestamp.setText(lastMessageTimestampList.get(position));
-            if(pictureList.size() > position){
-                ((MainViewHolder) holder).imageView.setImageBitmap(pictureList.get(position));
+            ((MainViewHolder) holder).usernameView.setText(conversationList.get(position).getConversationName());
+            ((MainViewHolder) holder).lastMessageView.setText(conversationList.get(position).getConversationLastMessage());
+            ((MainViewHolder) holder).lastMessageTimestamp.setText(conversationList.get(position).getGetConversationLastMessageTimeStamp());
+            if(conversationList.get(position).getConversationProfilePic() != null){
+                ((MainViewHolder) holder).imageView.setImageBitmap(conversationList.get(position).getConversationProfilePic());
             }
             else{
                 ((MainViewHolder) holder).imageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
             }
 
             ((MainViewHolder) holder).itemView.setOnClickListener(view -> {
-                Log.d("MainScreenAdapter", String.format("Name size: %s, Id size: %s,  position: %s", usernameList.size(), idList.size(), position));
-                ConversationObject conversationObject = new ConversationObject(usernameList.get(position), idList.get(position));
+                ConversationObject conversationObject = conversationList.get(position);
                 onFriendClickSubject.onNext(conversationObject);
             });
         }
@@ -89,11 +84,11 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        if (usernameList.size() == 0){
+        if (conversationList.size() == 0){
             return 1;
         }
         else{
-            return usernameList.size();
+            return conversationList.size();
         }
 
     }
@@ -106,7 +101,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
         if(!isConnectionWorking){
             return NO_CONNECTION_VIEW_TYPE;
         }
-        if (usernameList.size() == 0){
+        if (conversationList.size() == 0){
             return EMPTY_VIEW_TYPE;
         }
         else{
@@ -154,15 +149,7 @@ public class MainScreenAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void setUsernameList(List<String> usernameList) {
-        this.usernameList = usernameList;
-    }
-
-    public void setLastMessageList(List<String> lastMessageList){this.lastMessageList = lastMessageList;}
-
-    public void setLastMessageTimestampList(List<String> lastMessageTimestampList) {this.lastMessageTimestampList = lastMessageTimestampList; }
-
-    public void setIdList(List<Integer> idList) {this.idList = idList; }
+    public void setConversationList(List<ConversationObject> conversationList) { this.conversationList = conversationList;}
 
     public PublishSubject<String> getClick(){
         return onClickSubject;

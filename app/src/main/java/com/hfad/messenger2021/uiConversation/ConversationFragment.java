@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.Helpers.getGson;
@@ -58,7 +57,7 @@ public class ConversationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //User's and friend's data is passed in newInstance(param1, param2) in JSON format
+    //User's and friend's data is passed in newInstance(param1, param2) in String format that can be converted to JSON
     public static ConversationFragment newInstance(String param1, String param2) {
         ConversationFragment fragment = new ConversationFragment();
         Bundle args = new Bundle();
@@ -102,15 +101,15 @@ public class ConversationFragment extends Fragment {
 
         BackEndViewModel backEndViewModel = new ViewModelProvider(getActivity()).get(BackEndViewModel.class);
 
-        friendsNameTextView.setText(conversationObject.getFriendsName());
-        if (conversationObject.getFriendsProfilePic() != null){
-            friendsProfilePicImageView.setImageBitmap(conversationObject.getFriendsProfilePic());
+        friendsNameTextView.setText(conversationObject.getConversationName());
+        if (conversationObject.getConversationProfilePic() != null){
+            friendsProfilePicImageView.setImageBitmap(conversationObject.getConversationProfilePic());
         }
         else{
             friendsProfilePicImageView.setImageResource(R.drawable.ic_baseline_account_circle_24);
         }
 
-        backEndViewModel.loadConversationInterval(userObject.getId(), userObject.getApiKey(), conversationObject.getFriendsId()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
+        backEndViewModel.loadConversationInterval(userObject.getId(), userObject.getApiKey(), conversationObject.getConversationId()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<JSONObject>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {loadConversationDisposable = d;}
             @Override
@@ -129,7 +128,8 @@ public class ConversationFragment extends Fragment {
                     adapter.setMessageList(messageList);
                     adapter.notifyDataSetChanged();
 
-                    //Show new messages when conversation is scrolled all the way down and new message is received
+                    //Show new messages when conversation is scrolled all the way down (last 2 messages are at the bottom) and new message is received
+                    //                  OR
                     //Scroll to bottom for the first time when Fragment is created
                     int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                     if(((messageList.size() - 1 - lastVisibleItem) < 2 && messageCount != messageList.size()) || !wasScrolledForTheFirstTime){
@@ -150,7 +150,7 @@ public class ConversationFragment extends Fragment {
 
         sendMessageImageView.setOnClickListener(view -> {
             if(inputEditText.getText().toString().length() != 0){
-                backEndViewModel.sendMessage(userObject.getId(), conversationObject.getFriendsId(), userObject.getApiKey(), inputEditText.getText().toString()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
+                backEndViewModel.sendMessage(userObject.getId(), conversationObject.getConversationId(), userObject.getApiKey(), inputEditText.getText().toString()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {sendMessageDisposable = d;}
                     @Override

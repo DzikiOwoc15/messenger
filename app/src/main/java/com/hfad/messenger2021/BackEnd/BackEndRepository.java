@@ -188,13 +188,13 @@ public class BackEndRepository {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public Observable<Integer> sendMessage(int userId, int friendsId , String apiKey, String message){
-        return sendMessageASYNC(userId, friendsId, apiKey, stringEncoder(message));
+    public Observable<Integer> sendMessage(int userId, int conversationId , String apiKey, String message){
+        return sendMessageASYNC(userId, conversationId, apiKey, stringEncoder(message));
     }
 
-    private Observable<Integer> sendMessageASYNC(int userId, int friendsId , String apiKey, String message){
+    private Observable<Integer> sendMessageASYNC(int userId, int conversationId , String apiKey, String message){
         return Observable.fromCallable(() -> {
-            URL url = new URL(String.format("http://%s:8080/api/sendMessage?userId=%s&friendsId=%s&message=%s&apiKey=%s", ipv4, userId, friendsId, message, apiKey));
+            URL url = new URL(String.format("http://%s:8080/api/sendMessage?userId=%s&conversationId=%s&message=%s&apiKey=%s", ipv4, userId, conversationId, message, apiKey));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setConnectTimeout(TIMEOUT_TIME);
@@ -203,17 +203,17 @@ public class BackEndRepository {
         });
     }
 
-    public Observable<JSONObject> loadConversationInterval(int userId, String apiKey, int friendsId){
-        return Observable.interval(0, 5, TimeUnit.SECONDS).flatMap(aLong -> loadConversationASYNC(userId, apiKey, friendsId));
+    public Observable<JSONObject> loadConversationInterval(int userId, String apiKey, int conversationId){
+        return Observable.interval(0, 5, TimeUnit.SECONDS).flatMap(aLong -> loadConversationASYNC(userId, apiKey, conversationId));
     }
 
-    public Observable<JSONObject> loadConversation(int userId, String apiKey, int friendsId){
-        return loadConversationASYNC(userId, apiKey, friendsId);
+    public Observable<JSONObject> loadConversation(int userId, String apiKey, int conversationId){
+        return loadConversationASYNC(userId, apiKey, conversationId);
     }
 
-    private Observable<JSONObject> loadConversationASYNC(int userId, String apiKey, int friendsId){
+    private Observable<JSONObject> loadConversationASYNC(int userId, String apiKey, int conversationId){
         return Observable.fromCallable(() -> {
-            URL url = new URL(String.format("http://%s:8080/api/loadConversation?userId=%s&apiKey=%s&friendsId=%s", ipv4, userId, apiKey, friendsId));
+            URL url = new URL(String.format("http://%s:8080/api/loadConversation?userId=%s&apiKey=%s&conversationId=%s", ipv4, userId, apiKey, conversationId));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(TIMEOUT_TIME);

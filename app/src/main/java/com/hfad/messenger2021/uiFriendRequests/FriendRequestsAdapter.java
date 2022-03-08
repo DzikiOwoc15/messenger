@@ -10,9 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hfad.messenger2021.Objects.RequestResponse;
+import com.hfad.messenger2021.Objects.FriendRequestClick;
 import com.hfad.messenger2021.R;
-import com.hfad.messenger2021.uiMain.MainScreenAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     //Publish subject with custom object named RequestResponse is used to transfer data
     //(boolean isAccepted, int relationId) using single rxJava subject onClick
-    private final PublishSubject<RequestResponse> requestClickPublisher = PublishSubject.create();
+    private final PublishSubject<FriendRequestClick> requestClickPublisher = PublishSubject.create();
 
     @NonNull
     @Override
@@ -51,7 +50,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             //On accept click listener
             ((friendRequestViewHolder) holder).request_accept.setOnClickListener(view -> {
-                RequestResponse response = new RequestResponse(true, relationId.get(position));
+                FriendRequestClick response = new FriendRequestClick(true, relationId.get(position));
                 requestClickPublisher.onNext(response);
 
                 //Remove request no matter if the request has been accepted or not
@@ -59,7 +58,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
             //On decline click listener
             ((friendRequestViewHolder) holder).request_decline.setOnClickListener(view -> {
-                RequestResponse response = new RequestResponse(false, relationId.get(position));
+                FriendRequestClick response = new FriendRequestClick(false, relationId.get(position));
                 requestClickPublisher.onNext(response);
 
                 //Remove request no matter if the request has been accepted or not
@@ -105,7 +104,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return clickPublisher;
     }
 
-    public PublishSubject<RequestResponse> getRequestClickPublisher() {
+    public PublishSubject<FriendRequestClick> getRequestClickPublisher() {
         return requestClickPublisher;
     }
 

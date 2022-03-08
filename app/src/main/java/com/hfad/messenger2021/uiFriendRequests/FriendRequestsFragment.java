@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
 import com.hfad.messenger2021.Helpers.getRidOfDisposable;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
-import com.hfad.messenger2021.Objects.RequestResponse;
+import com.hfad.messenger2021.Objects.FriendRequestClick;
 import com.hfad.messenger2021.R;
 import com.hfad.messenger2021.uiSearchForFriends.FragmentSearchForFriends;
 
@@ -119,11 +119,11 @@ public class FriendRequestsFragment extends Fragment {
             });
 
             //Accept or decline click adapter
-            adapter.getRequestClickPublisher().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<RequestResponse>() {
+            adapter.getRequestClickPublisher().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<FriendRequestClick>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {clickDisposable = d;}
                 @Override
-                public void onNext(@NonNull RequestResponse userResponse) {
+                public void onNext(@NonNull FriendRequestClick userResponse) {
 
                     backEndViewModel.answerFriendRequest(user.getId(), userResponse.getRelationId(), user.getApiKey(), userResponse.isAccepted()).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Observer<Integer>() {
                         @Override

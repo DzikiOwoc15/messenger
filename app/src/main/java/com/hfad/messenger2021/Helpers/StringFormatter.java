@@ -1,12 +1,15 @@
 package com.hfad.messenger2021.Helpers;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
+
+import com.hfad.messenger2021.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DateFormatter {
-    public static String format(String date){
+public class StringFormatter {
+    public static String dateFormat(String date){
         String year = date.substring(0, 4);
         String month = date.substring(5, 7);
         String day = date.substring(8, 10);
@@ -33,6 +36,15 @@ public class DateFormatter {
         }
         else{
             return String.format("%s.%s.%s", year, month, day);
+        }
+    }
+
+    public static String nameFormat(String lastMessage, String friendsName, boolean wasSentByMe, String you){
+        if (wasSentByMe){
+            return String.format("%s: %s", you, lastMessage);
+        }
+        else{
+            return String.format("%s: %s", friendsName, lastMessage);
         }
     }
 }

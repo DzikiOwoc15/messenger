@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hfad.messenger2021.BackEnd.BackEndViewModel;
-import com.hfad.messenger2021.Helpers.DateFormatter;
+import com.hfad.messenger2021.Helpers.StringFormatter;
 import com.hfad.messenger2021.Helpers.getGson;
 import com.hfad.messenger2021.LocalDatabase.LocalDatabaseViewModel;
 import com.hfad.messenger2021.Objects.ConversationObject;
@@ -32,15 +32,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 //TODO FIX INCORRECT LAST MESSAGE
@@ -110,42 +106,43 @@ public class MainScreenFragment extends Fragment {
                 public void onSubscribe(@NonNull Disposable d) {loadDataDisposable = d;}
                 @Override
                 public void onNext(@NonNull Object usersJSON) {
-                    List<String> friendsList = new ArrayList<>();
-                    List<String> lastMessageTimestampList = new ArrayList<>();
-                    List<String> lastMessageList = new ArrayList<>();
-                    List<Integer> idList = new ArrayList<>();
+                    List<ConversationObject> conversationObjList = new ArrayList<>();
                     try {
-                        JSONArray array = ((JSONObject)usersJSON).getJSONArray("friends");
+                        JSONArray array = ((JSONObject)usersJSON).getJSONArray("conversations");
                         for(int i = 0; i < array.length(); i++){
-                            Integer id = array.getJSONObject(i).getInt("id");
-                            String name = array.getJSONObject(i).getString("name");
-                            String surname = array.getJSONObject(i).getString("surname");
+                            int id = array.getJSONObject(i).getInt("id");
+                            JSONArray conversationUsersArray = array.getJSONObject(i).getJSONArray("users");
+                            String nameCombined = "";
+                            StringBuilder stringBuilder = new StringBuilder(nameCombined);
+                            for (int j = 0; j < conversationUsersArray.length(); j++){
+                                String conversationUserName = conversationUsersArray.getJSONObject(i).getString("name");
+                                String conversationUserSurname = conversationUsersArray.getJSONObject(i).getString("surname");
+                                String conversationUserId = conversationUsersArray.getJSONObject(i).getString("id");
+
+                                stringBuilder.append(String.format("%s %s", conversationUserName, conversationUserSurname));
+                            }
                             String timestamp = array.getJSONObject(i).getString("last_message_timestamp");
                             String lastMessage = array.getJSONObject(i).getString("last_message");
 
-                            friendsList.add(String.format("%s %s", name, surname));
-                            idList.add(id);
+                            ConversationObject conversation = new ConversationObject(nameCombined, id);
 
                             if (timestamp.equals("null")){
-                                lastMessageTimestampList.add("");
+                                conversation.setGetConversationLastMessageTimeStamp("");
                             }
                             else{
-                                lastMessageTimestampList.add(DateFormatter.format(timestamp));
+                                conversation.setGetConversationLastMessageTimeStamp(StringFormatter.dateFormat(timestamp));
                             }
 
                             if (lastMessage.equals("null")){
-                                lastMessageList.add("");
+                                conversation.setConversationLastMessage("");
                             }
                             else{
-                                lastMessageList.add(lastMessage);
+                                conversation.setConversationLastMessage(StringFormatter.nameFormat(lastMessage, "TEMPORARY", false, getString(R.string.you)));
+                                //TODO UPDATE RETURN SCHEMA INCLUDE LAST_MESSAGE_AUTHORS_ID
                             }
 
                         }
-                        Log.d("MainScreenFragment", String.format("Conversations loaded: %d", friendsList.size()));
-                        recyclerAdapter.setIdList(idList);
-                        recyclerAdapter.setUsernameList(friendsList);
-                        recyclerAdapter.setLastMessageList(lastMessageList);
-                        recyclerAdapter.setLastMessageTimestampList(lastMessageTimestampList);
+                        recyclerAdapter.setConversationList(conversationObjList);
                         recyclerAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
