@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/accept_request.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/decline_request.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/friend_requests.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/no_connection.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/no_conversations.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/no_requests_found.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/search.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/send.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-anydpi/settings.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable-night/button_fade_background.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable/button_fade_background.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable/rectangle_round_corners.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable/rounded_button.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable/rounded_edit_text.xml" value="0.1265" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout-night/fragment_create_user.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout-night/fragment_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/conversation_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_conversation.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_create_user.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_friend_requests.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_search_for_friends.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/friend_request_empty.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/friend_request_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/search_for_friends_empty.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/search_for_friends_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/text_message.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/text_message_received.xml" value="0.22826086956521738" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
