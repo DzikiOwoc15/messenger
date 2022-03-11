@@ -2,7 +2,8 @@
 <resources>
     <color name="blue_primary">#167DFA</color>
     <color name="blue_dark">#126BD6</color>
-    <color name="blue_fade_end">#004FAE</color>
+    <color name="blue_fade_start">#96BDFF</color>
+    <color name="blue_fade_end">#167DFA</color>
     <color name="background">#FFFFFF</color>
     <color name="secondary_light">#DAE5F6</color>
     <color name="secondary_dark">#96BDFF</color>
