@@ -19,12 +19,15 @@
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/drawable/rounded_edit_text.xml" value="0.1265" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout-night/fragment_create_user.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout-night/fragment_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout-night/fragment_main_screen.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/conversation_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/conversation_item_loading.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_conversation.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_create_user.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_friend_requests.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_main_screen.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/fragment_search_for_friends.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/friend_request_empty.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/lukas/StudioProjects/messenger/app/src/main/res/layout/friend_request_item.xml" value="0.22826086956521738" />
