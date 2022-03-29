@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".uiLogin.LoginFragment">
 
+    <TextView
+        android:layout_width="0dp"
+        android:textColor="@color/blue_primary"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:text="@string/email_address"
+        app:layout_constraintBottom_toTopOf="@+id/login_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="25dp">
+    </TextView>
+
     <EditText
         android:id="@+id/login_email"
         android:textColorHint="@color/blue_primary"
-        android:textColor="@color/blue_primary"
+        android:textColor="@color/white"
+        android:textCursorDrawable="@null"
         app:backgroundTint="@color/blue_primary"
+        android:background="@drawable/edit_text_background"
         android:hint="@string/email_address"
         android:gravity="center"
         android:layout_width="0dp"
@@ -38,18 +52,32 @@
         app:layout_constraintTop_toBottomOf="@+id/login_email">
     </TextView>
 
+    <TextView
+        android:layout_width="0dp"
+        android:textColor="@color/blue_primary"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        app:layout_constraintBottom_toTopOf="@+id/login_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="25dp">
+    </TextView>
+
     <EditText
         android:id="@+id/login_phone"
+        android:textCursorDrawable="@null"
         android:textColorHint="@color/blue_primary"
-        android:textColor="@color/blue_primary"
+        android:textColor="@color/white"
         app:backgroundTint="@color/blue_primary"
+        android:background="@drawable/edit_text_background"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:hint="@string/phone_number"
         android:importantForAutofill="no"
@@ -59,15 +87,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
     </EditText>
 
+    <TextView
+        android:layout_width="0dp"
+        android:textColor="@color/blue_primary"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="25dp">
+    </TextView>
+
     <EditText
         android:id="@+id/login_password"
         android:textColorHint="@color/blue_primary"
-        android:textColor="@color/blue_primary"
+        android:textColor="@color/white"
         app:backgroundTint="@color/blue_primary"
+        android:textCursorDrawable="@null"
+        android:background="@drawable/edit_text_background"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginRight="25dp"
