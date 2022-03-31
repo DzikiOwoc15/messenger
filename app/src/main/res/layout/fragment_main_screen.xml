@@ -8,18 +8,20 @@
     android:layout_height="wrap_content"
     tools:context=".uiMain.MainScreenFragment">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/main_profile_pic"
         android:src="@drawable/ic_baseline_account_circle_24"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:contentDescription="@string/profile_picture"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         app:layout_constraintBottom_toTopOf="@+id/main_searchView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-    </ImageView>
+    </com.google.android.material.imageview.ShapeableImageView>
 
     <RelativeLayout
         android:id="@+id/main_friend_requests_wrapper"
@@ -95,6 +97,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

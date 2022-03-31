@@ -1,13 +1,19 @@
 package com.hfad.messenger2021.uiMain;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +56,7 @@ public class MainScreenFragment extends Fragment {
     private Disposable emptyClickDisposable;
     private Disposable friendCLickDisposable;
     private Disposable checkInternetConnectionDisposable;
+    private ImageView profilePic = null;
 
 
     public MainScreenFragment() {
@@ -61,6 +70,43 @@ public class MainScreenFragment extends Fragment {
         return fragment;
     }
 
+    ActivityResultLauncher<Intent> cropLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getData() != null){
+            Bundle extras = result.getData().getExtras();
+            Bitmap pic = extras.getParcelable("data");
+            profilePic.setImageBitmap(pic);
+        }
+    });
+
+
+    ActivityResultLauncher<Intent> pictureSelectionLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK){
+            try {
+                InputStream inputStream = getContext().getContentResolver().openInputStream(result.getData().getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                Uri picUri = result.getData().getData();
+                Intent cropIntent = new Intent("com.android.camera.action.CROP");
+                cropIntent.setDataAndType(picUri, "image/*");
+                //set crop properties
+                cropIntent.putExtra("crop", "true");
+                //indicate aspect of desired crop
+                cropIntent.putExtra("aspectX", 1);
+                cropIntent.putExtra("aspectY", 1);
+                //indicate output X and Y
+                cropIntent.putExtra("outputX", 256);
+                cropIntent.putExtra("outputY", 256);
+                //retrieve data on return
+                cropIntent.putExtra("return-data", true);
+
+                cropLauncher.launch(cropIntent);
+                //profilePic.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +118,7 @@ public class MainScreenFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_main_screen, container, false);
         ImageView friendRequestsImageView = root.findViewById(R.id.main_friend_requests);
+        profilePic = root.findViewById(R.id.main_profile_pic);
         RelativeLayout friendRequestsWrapper = root.findViewById(R.id.main_friend_requests_wrapper);
         TextView friendRequestsBadge = friendRequestsWrapper.findViewById(R.id.main_friend_requests_badge);
 
@@ -215,8 +262,20 @@ public class MainScreenFragment extends Fragment {
             public void onComplete() {}
         });
 
-        friendRequestsImageView.setOnClickListener(view -> {
-            getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FriendRequestsFragment.class, null).addToBackStack("MainScreen").commit();
+        friendRequestsImageView.setOnClickListener(view -> getParentFragmentManager().beginTransaction().replace(R.id.main_fragment_container, FriendRequestsFragment.class, null).addToBackStack("MainScreen").commit());
+
+        //Main profile pic onClickListener
+        profilePic.setOnClickListener(view -> {
+            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            getIntent.setType("image/*");
+
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setType("image/*");
+
+            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+            pictureSelectionLauncher.launch(pickIntent);
         });
 
         return root;

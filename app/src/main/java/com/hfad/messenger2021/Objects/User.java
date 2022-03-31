@@ -1,5 +1,7 @@
 package com.hfad.messenger2021.Objects;
 
+import android.graphics.Bitmap;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,6 +10,7 @@ public class User {
     @PrimaryKey
     private int id;
     private String apiKey;
+    //private Bitmap profilePic;
 
 
     public User(int id, String apiKey){
@@ -30,4 +33,15 @@ public class User {
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
+
+    /*
+    public Bitmap getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Bitmap profilePic) {
+        this.profilePic = profilePic;
+    }
+
+     */
 }
