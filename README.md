@@ -29,4 +29,6 @@ A front-end mobile part of my full-stack messaging app
 
 ### :moon: Dark and light mode
 
+<img src="messenger_screenshots/dark.png" alt="drawing" width="200"/>
+
 
