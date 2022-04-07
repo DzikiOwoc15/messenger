@@ -21,6 +21,12 @@ A front-end mobile part of my full-stack messaging app
 
 ### :mag: Search for friends
 
+<img src="messenger_screenshots/search.png" alt="drawing" width="200"/>
+
 ### :email: Chat with them real-time
 
+<img src="messenger_screenshots/main.png" alt="drawing" width="200"/>
+
 ### :moon: Dark and light mode
+
+
